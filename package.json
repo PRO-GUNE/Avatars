@@ -1,0 +1,15 @@
+{
+    "name": "thoughts_nft_generator",
+    "version": "1.0.0",
+    "description": "A package to generate different art files given number of layers",
+    "main": "index.js",
+    "scripts": {
+        "build": "node index.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "C.M. Gunasekara",
+    "license": "MIT",
+    "dependencies": {
+        "canvas": "^2.8.0"
+    }
+}

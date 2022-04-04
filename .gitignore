@@ -1,0 +1,12 @@
+# Node modules
+node_modules
+
+# package-lock file
+package-lock.json
+
+# The Build folder
+build
+
+# The Layers folder
+layers
+
