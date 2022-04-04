@@ -1,3 +1,4 @@
-const {createEdition} = require(`.\\src\\main.js`)
+const {createEdition} = require('./src/utils.js')
 
 createEdition()
+

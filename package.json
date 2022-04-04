@@ -10,6 +10,6 @@
     "author": "C.M. Gunasekara",
     "license": "MIT",
     "dependencies": {
-        "canvas": "^2.8.0"
+        "sharp": "^0.30.3"
     }
 }
