@@ -7,7 +7,6 @@ const console = require('console')
 
 // Set the basePath of the current directory and load the local dependencies
 const {
-    description,
     baseURI,
     buildDir, 
     layersDir,
@@ -22,6 +21,7 @@ const {
 // Data attributes
 const dnaGenerated = {}
 const namesGenerated = {}
+let currentTolerance = uniqueDNATolerance
 
 /////////////////////////////////////////////////////////////////////////////
 
@@ -71,19 +71,12 @@ const getRarity = (_filename) =>{
 
     if(_filename.includes(rarityDelimiter)){
         rarity = parseInt(_filename.split(rarityDelimiter)[1].slice(0,2))/100
+        return rarity
     }
     
     return 1
 }  
 
-// Calculate overall rarity
-const calcRarity = (_elements)=>{
-    let rarity=0
-    _elements.forEach((e)=>{
-        rarity*=e.rarity
-    })
-    return rarity
-}
 
 // Get the elements within each _layer sub folder
 const getElements = (path) =>{
@@ -156,6 +149,7 @@ const getRandomLayers = (_layers) =>{
     const dna = selectedElements.map((item)=>item.index).join('')
 
     if (dnaGenerated[dna]){
+        currentTolerance--;
         return getRandomLayers(_layers)
     }
 
@@ -207,14 +201,15 @@ const renderImage = (_selectedLayers, _edition) =>{
     const name = randomName(names[2])
     console.log(name);
 
-    const rarity = calcRarity(elements)
-
     const meta = {
         name,
         description: `${names[2]} feeling ${names[0]} wearing a ${names[1]} and a ${names[3]}`,
-        image: `${_edition}.png`,
+        image: `${baseURI}${_edition}.png`,
         attributes: {
-            rarity
+            feeling: elements[0].rarity,
+            attire: elements[1].rarity,
+            person: elements[2].rarity,
+            uptop: elements[3].rarity
         }
     }
 
@@ -244,6 +239,12 @@ const createEdition = async () => {
 
     // Create the editions and save to the 
     for(let _edition=1; _edition<=editionSize; _edition++){
+        // Check if not enough files to create required edition size
+        if(!currentTolerance){
+            console.error(`Not enough layers to create a collection of size ${editionSize}. Created ${_edition} NFTs` )
+            break
+        }
+
         let selectedLayers = getRandomLayers(layers)
         renderImage(selectedLayers, _edition)
     } 
